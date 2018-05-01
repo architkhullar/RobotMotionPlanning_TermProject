@@ -11,4 +11,33 @@
 * Finally, after much research RRT was choosen for this as the previously proposed technique of Reduced Visibility graph Roadmap methodology would fail for a robot with differential drive. RRt was finally implemeted fro the pathplanning in <b>MATLAB</b>
 
 * A map for the problem space in 2d was constructed by stitching 3 images for the boundary, parking spaces and the available parking spaces as follows
-<img src="" alt="Smiley face" height="42" width="42">
+
+ ![Stationary](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/stationary.bmp)
+ ![Road_Markings](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/road_markings.bmp)
+ ![Parked Cars](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/parked_cars.bmp)
+ ![Combined](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
+ 
+ * After this, Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m), which looks like this:
+ ![Primitive Motion of the Differential Drive car like robot(https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
+ 
+ * In the next module
+ 
+ 
+ 
+ 
+### Conceptual Description (Nonholonomic):
+* The mobile robots are known to be nonholonomic, i.e.., they are subject to nonintegrable equality nonholonomic constraints involving the velocity. In other words, the dimension of the admissible velocity space is smaller than the dimension of the configuration space. In addition, the range of possible controls is usually further constrained by inequality constraints due to mechanical stops in steering mechanism. 
+	
+
+C = R2*S1 
+q (x, y, theta)
+-dx*sin(theta)+dy*cos(theta) = 0
+
+dx = v*cos(fi)*cos(theta) 
+dy = v*cos(fi)*sin(theta) 
+dtheta = (v/L)*sin(fi)
+
+v=[-1, 1] 
+|fi| <= MAXfi
+
+distance (p, q) = [(p.x-q.x)^2 + (p.y-q.y)^2 + A*min((p.theta-q.theta)^2 + (p.theta-q.theta+2*PI)^2 + (p.theta-q.theta-2*PI)^2) ] ^0.5
