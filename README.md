@@ -18,7 +18,7 @@
  ![Combined](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
  
  * After this, Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m), which looks like this:
- ![Primitive Motion of the Differential Drive car like robot(https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
+ ![Primitive Motion of the Differential Drive car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
  
  * In the next module
  
