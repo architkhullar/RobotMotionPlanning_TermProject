@@ -18,13 +18,14 @@
  ![Combined](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
  
  * After this, Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m), which looks like this:
- ![Primitive Motion of the Differential Drive car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/combined.bmp)
+ ![Primitive Motion of the Differential Drive car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive.JPG)
  
- * In the next module
+ * In the next module, a normal RRT was implemented from a given initial to a given goal position which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/NormalRRT.m), whcih looks like:
+ ![Normal RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/normal%20RRt.JPG)
  
- 
- 
- 
+ * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m), whcih looks like:
+ ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
+  
 ### Conceptual Description (Nonholonomic):
 * The mobile robots are known to be nonholonomic, i.e.., they are subject to nonintegrable equality nonholonomic constraints involving the velocity. In other words, the dimension of the admissible velocity space is smaller than the dimension of the configuration space. In addition, the range of possible controls is usually further constrained by inequality constraints due to mechanical stops in steering mechanism. 
 	
