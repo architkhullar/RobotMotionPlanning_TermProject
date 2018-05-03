@@ -76,7 +76,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 ### Incomplete things:
 * **Though my random samples are only generating at the white spaces the collison detection is not working and, i.e. it is still making matks through the configuration space. I was trying rectify this problem by creating array of obstacles map and then while finding the nearest node to the randomly generated point, it check if they are intersecting. If they, intersect it moves to the next nearest and so on**  
   
-### Things I should have done differently:
+### Scope of Improvement:
 * I should have stuck to my own Strength, instead of getting into a unexplored territory of MATLAB, Should have stuck to C++
 * I didn't take into account the collision detecting algorithms while starting it and hence it complicated the code later.
 * while starting, for a very long time I tried to do it with MATLAB's inbuilt library called Automated System Driving Toolbox, which had a lot of constraints pre defined [link](https://www.mathworks.com/products/automated-driving/features.html)
