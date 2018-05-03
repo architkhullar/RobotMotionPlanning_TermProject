@@ -45,7 +45,7 @@
 
 **II Finding the nearest node from the randomly generated node** - This is done by calculating distance of the random configuration from each node in the tree, Euclidean distance is used for this. All the distances are stored in an array and the minmun s=distance and its corresponding node is found. **Here collision detection should have been added**  
 
-**II Extending the tree towards the randomly generated node**
+**II Extending the tree towards the randomly generated node** - To do this either the random configuration can be added directly to the tree as new node or the tree is extended one step in the direction of the random node. This step size choosen randomly. This can be further optimized for better results
 
 	
 ### Conceptual Description (Nonholonomic):
@@ -65,6 +65,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
  
  * Normal RRT was implemented from a given initial to a given goal position which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/NormalRRT.m), whcih looks like:
  ![Normal RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/normal%20RRt.JPG)
+ * **Consequently, whhen the primitives were done I added it to the generation or tree extension like:
  
  * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m), whcih looks like:
  ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
@@ -79,4 +80,12 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 * I should have stuck to my own Strength, instead of getting into a unexplored territory of MATLAB, Should have stuck to C++
 * I didn't take into account the collision detecting algorithms while starting it and hence it complicated the code later.
 * while starting, for a very long time I tried to do it with MATLAB's inbuilt library called Automated System Driving Toolbox, which had a lot of constraints pre defined [link](https://www.mathworks.com/products/automated-driving/features.html)
+
+### Limitations of the project:
+* No collision detection
+* No bias for the random generation of points and the theta or the angle of the orientation and hence very slow
+* random sampling sould have been bettered
+* can work more to optimizethe orientation (can add a bias for the orientations as well)
+* Optimized step size
+* Biases are always tricky and need a lot of experimentation, which I wasn't left with much.
 	
