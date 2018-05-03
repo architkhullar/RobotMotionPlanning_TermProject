@@ -70,7 +70,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
  ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
  
  * third module with the incorporation on the map, looks like:
- ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
+ ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/success_test.JPG)
  
 ### Incomplete things:
 * **Though my random samples are only generating at the white spaces the collison detection is not working and, i.e. it is still making matks through the configuration space. I was trying rectify this problem by creating array of obstacles map and then while finding the nearest node to the randomly generated point, it check if they are intersecting. If they, intersect it moves to the next nearest and so on**  
