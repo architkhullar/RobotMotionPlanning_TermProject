@@ -4,7 +4,7 @@
 * Given a parking space scenario with rectangular shaped obstacles (representing cars), consisting of parking spaces (parallel and reverse) with a rectangular car like differential drive bot, its initial position and multiple possible goal positions (which represent all the parking spaces that the bot car can be parked at). The final output of this project will be a path from its initial position to one of the final positions, which will be the closest or the fastest parking goal position.
 
 ### Robot type and constraints:
-* The project is in a planar (2D) space with a single rectangular car like robot DOF as R2 * S1, with motion allowed only in forward direction. Though the car has three degrees of freedom i.e. the position(x,y) and orientation(theta). The driver has only two controls, i.e. the accelerator to control the position and the steering wheel to control the orientation of the car. Control system equations for such a system can wee written as:
+* The project is in a planar (2D) space with a single rectangular car like robot DOF as R2 * S1, with motion allowed only in both the directions, i.r. forward and reverse. Though the car has three degrees of freedom i.e. the position(x,y) and orientation(theta). The driver has only two controls, i.e. the accelerator to control the position and the steering wheel to control the orientation of the car. Control system equations for such a system can wee written as:
 
 !['theta; signifies the orientation, 'v' is the linear velocity and 'omega' is the steering angle](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/equations.JPG)
 
@@ -81,13 +81,65 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
  ![Normal RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/normal%20RRt.JPG)
  ### How to genrate the RRT with the nonholonomic constraints (CHANGES HAVE BEEN DONE HERE w.r.t to taking into account the orientation as well)
 
-* Similar to the 
- 
+* Similar to the RRt drawn before for holonomic robots, uniform sampling and biased sampling techniques are implemented. For biased sampling different probabilities can be used and checked as to how it affects the performance of the algorithm.
+
+### Finding the Nearest node: 
+* As we have three degrees of freedom x, y-coordinate and orientation θ for the given car like nnoholnomic robot. Hence while calculating the distance of random node from the nodes in the tree along with x,y-coordinate we also have to take into account θ. To do this in the Euclidean distance equation, under the square root, we add the term
+
+```((180/pi)^2)min([(theta_rand - rrt_tree.node(i).theta)^2,(theta_rand - rrt_tree.node(i).theta - pi)^2,(theta_rand - rrt_tree.node(i).theta + pi)^2] )```
+
+* here 'theta_rand' represents the random configuration generated orientation, s.t., 'rrt_tree.node(i).theta' is the ith node's orientationin the tree.
+* The constant (180/pi)^2 is resulted from angle conversion (radians->degree) 
+* First term is self explanatory.
+* The 2nd and 3rd term are used to handle the direction the car is facing which can be as follows:
+* in direction of random configuration
+* in opposite direction of random configuration
+
+* and the hence the distance is calculated as:
+
+``` distance(i) = sqrt( (x_rand - rrt_tree.node(i).x)^2 + (y_rand - rrt_tree.node(i).y)^2 +  ((180/pi)^2)*min( [ (theta_rand - rrt_tree.node(i).theta)^2, (theta_rand - rrt_tree.node(i).theta - pi)^2, (theta_rand - rrt_tree.node(i).theta + pi)^2 ] )   );```
+
+### Extension of the tree towards the random configuration:
+
+* This being the most difficult part is handled using the pritives drawn above. Motion primitives are generated from the tree node closest to the random configuration then end point of motion primitive which is closest to the random configuration is added as the new node and the trajectory as the edge. 
+
+* For example consider two point each represented by green and black dot such that the former represents a random configuration and later nearest node in the tree to green dot.
+* For our example we consider that the robot's orientation is 0 degree at the tree node.
+Next the end points of motion premitives and closest node to random point so cinfigured are marked with a red dot, as A and are joined with dotted line.
+This point A is the new added node to the tree and the also edge representing the trajectory between tree node and point A is added.
+
+* ![primitive2](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive_2.JPG)
+
  * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m), whcih looks like:
- ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
+ ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/0.jpg)
  
- * third module with the incorporation on the map, looks like:
- ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/success_test.JPG)
+* **After this bias along the staright path from the initial to the final confiuration was added as:**
+*
+```
+    random_number = rand;
+    bias = 0.1; %Probability by which goal node will be sampled
+    if random_number >= (1 - bias) && random_number < 1
+        x_rand = x_goal;
+        y_rand = y_goal;
+        theta_rand = theta_goal;
+    else
+        x_rand = round((x_max - x_min)*rand);
+        y_rand = round((y_max - y_min)*rand);
+        theta_rand = (2*pi - 0.0001)*rand;
+    end
+```
+ 
+ * third module with the incorporation on the bias, looks like:
+ ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/result_with_bias.JPG)
+ 
+ * Just for Visualization purpose I have also drawn the orientation of the car at a particular point. Here, the point ends where the black line ends and starts with a red colored line vector representing the orientation of the car. 
+ ```
+ ed = [cos(theta_new) -sin(theta_new); sin(theta_new) cos(theta_goal)] * [10*1.5; 0];
+ plot([x_new, x_new+ed(1)], [y_new, y_new+ed(2)], 'r-', 'Linewidth', 2);
+ plot(x_new+ed(1), y_new+ed(2), 'ko', 'MarkerSize',5, 'MarkerFaceColor','k');
+ ```
+ * This can be visualized as:
+ ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/result_with_orientation.JPG)
  
 **Running time of the algorithm n^2**
  
@@ -101,8 +153,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 
 ### Limitations of the project:
 * No collision detection
-* No bias for the random generation of points **(This is also done)** and the theta or the angle of the orientation and hence very slow
-* random sampling sould have been bettered
+* No bias for the random generation of points **(This is also fixed)** and the theta or the angle of the orientation and hence very slow
 * can work more to optimizethe orientation (can add a bias for the orientations as well)
 * Optimized step size
 * Biases are always tricky and need a lot of experimentation, which I wasn't left with much.
