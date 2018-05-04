@@ -1,4 +1,4 @@
-clc; clear all; close all;
+clc; clear all; close all; axis equal;
 %% Setting up the environment
 
 N = 5000; %maximum number of iterations
@@ -13,8 +13,12 @@ max_steering_angle = 0.7; %radians
 max_linear_vel = 40;
 
 x_init = 100; y_init = 100; theta_init = 0;
-x_goal = 500; y_goal = 400; theta_goal = 90*pi/180;
+x_goal = 100; y_goal = 500; theta_goal = 90*pi/180;
 
+%x = imread('combined.JPG')
+%mapMatrix = image(x)
+%mapMatrix
+%{
 % Enter the map here
 rectangle('Position', [40 0 10 80], 'FaceColor', 'black');
 rectangle('Position', [90 60 10 100], 'FaceColor', 'black');
@@ -35,6 +39,7 @@ mapMatrix(90:100, 60:160) = 1;
 mapMatrix(90:160, 160:170) = 1;
 mapMatrix(150:160, 60:160) = 1;
 mapMatrix(120:130, 1:40) = 1;
+%}
 
 %grid size
 x_min = 0; y_min = 0;
@@ -42,7 +47,7 @@ x_max = 600; y_max = 600;
 
 
 %drawing the initial and the goal position
-figure(1); axis([x_min x_max y_min y_max]); hold on; grid on;
+figure(1); axis('equal','xy');axis([x_min x_max y_min y_max]); hold on; grid on;
 plot(x_init, y_init, 'ko', 'MarkerSize',5, 'MarkerFaceColor','k');
 plot(x_goal, y_goal, 'go', 'MarkerSize',5, 'MarkerFaceColor','g');
 
@@ -91,7 +96,29 @@ while iter <= N
     %Random configuration from a uniform distribution
     x_rand = round((x_max - x_min)*rand);
     y_rand = round((y_max - y_min)*rand);
+    %x(x_rand, y_rand)
+    %if x(x_rand, y_rand) ~= 255
+     %   continue
+    %end
+    %impixelinfo(x_rand, y_rand)
     theta_rand = (2*pi - 0.0001)*rand;
+    
+    
+    %Adding bias
+    random_number = rand;
+    bias = 0.1; %Probability by which goal node will be sampled
+    if random_number >= (1 - bias) && random_number < 1
+        x_rand = x_goal;
+        y_rand = y_goal;
+        theta_rand = theta_goal;
+    else
+        x_rand = round((x_max - x_min)*rand);
+        y_rand = round((y_max - y_min)*rand);
+        theta_rand = (2*pi - 0.0001)*rand;
+    end
+
+    
+    
     
     
     %% calculating distance between generated random node and other nodes in the tree
@@ -200,6 +227,10 @@ while iter <= N
             hold on
         end
         
+        %Uncomment this section to draw orientation at the new node in the graph
+        ed = [cos(theta_new) -sin(theta_new); sin(theta_new) cos(theta_goal)] * [10*1.5; 0];
+        plot([x_new, x_new+ed(1)], [y_new, y_new+ed(2)], 'r-', 'Linewidth', 2);
+        plot(x_new+ed(1), y_new+ed(2), 'ko', 'MarkerSize',5, 'MarkerFaceColor','k');
       
         %Checking if goal is within threshold limits from the new state
         distance_to_goal = sqrt( (x_new - x_goal)^2 + (y_new - y_goal)^2); 
@@ -243,5 +274,3 @@ if sqrt((rrt_tree.node(index).x - x_goal)^2 + (rrt_tree.node(index).y - y_goal)^
         parent_index = rrt_tree.node(index).parent_index;
     end
 end
-%% Reading the elapsed time from stopwatch started by tic
-toc 
