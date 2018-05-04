@@ -74,7 +74,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 
 * **After all this, I decided to start with basic RRT while working on the Non Holonomic primitives simultaneously wheich were like:
  
- * Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m) which looks like this:
+ * Primitive motions for the above mentioned constarints on the car were implemented, which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m), which looks like this:
  ![Primitive Motion of the car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive.JPG)
  
  * Normal RRT was implemented from a given initial to a given goal position which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/NormalRRT.m), whcih looks like:
