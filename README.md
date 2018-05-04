@@ -1,7 +1,7 @@
 # RobotMotionPlanning_TermProject
 ### This serves as the project report for the term project for the Robot Motion Planning class (ITCS 6152) under Dr. Srivinas Akella by Archit Khullar 801038938 
 ### Problem Statement:
-* Given a parking space scenario with rectangular shaped obstacles (representing cars), consisting of parking spaces (parallel and reverse) with a rectangular car like differential drive bot, its initial position and multiple possible goal positions (which represent all the parking spaces that the bot car can be parked at). The final output of this project will be a path from its initial position to one of the final positions, which will be the closest or the fastest parking goal position.
+* Given a parking space scenario with rectangular shaped obstacles (representing cars), consisting of parking spaces (parallel and reverse) with a rectangular car like ro bot, its initial position and multiple possible goal positions (which represent all the parking spaces that the bot car can be parked at). The final output of this project will be a path from its initial position to one of the final positions, which will be the closest or the fastest parking goal position.
 
 ### Robot type and constraints:
 * The project is in a planar (2D) space with a single rectangular car like robot DOF as R2 * S1, with motion allowed only in both the directions, i.r. forward and reverse. Though the car has three degrees of freedom i.e. the position(x,y) and orientation(theta). The driver has only two controls, i.e. the accelerator to control the position and the steering wheel to control the orientation of the car. Control system equations for such a system can wee written as:
@@ -22,7 +22,7 @@ where 'theta; signifies the orientation, 'v' is the linear velocity and 'omega' 
 	
 * These equations are used to generate the orimitive motions of our robot which are explained and plotted below
   
-* Finally, RRT was choosen for this and this was very basic and the previously proposed technique of Reduced Visibility graph Roadmap methodology would fail for a robot with differential drive. RRt was finally implemeted for the pathplanning in <b>MATLAB</b>
+* Finally, RRT was choosen for this and this was very basic and the previously proposed technique of Reduced Visibility graph Roadmap methodology would fail for a robot with car like constraints. RRt was finally implemeted for the pathplanning in <b>MATLAB</b>
 
 * **Also, deviating from the initial proposal, I decide to skip the C-space calculation and instead create an image map with C-Space already computed.**
 
@@ -75,7 +75,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 * **After all this, I decided to start with basic RRT while working on the Non Holonomic primitives simultaneously wheich were like:
  
  * Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m) which looks like this:
- ![Primitive Motion of the Differential Drive car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive.JPG)
+ ![Primitive Motion of the car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive.JPG)
  
  * Normal RRT was implemented from a given initial to a given goal position which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/NormalRRT.m), whcih looks like:
  ![Normal RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/normal%20RRt.JPG)
@@ -110,7 +110,8 @@ This point A is the new added node to the tree and the also edge representing th
 
 * ![primitive2](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive_2.JPG)
 
- * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m), whcih looks like:
+ * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m),which looks like:
+ 
  ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/0.jpg)
  
 * **After this bias along the staright path from the initial to the final confiuration was added as:**
