@@ -4,9 +4,23 @@
 * Given a parking space scenario with rectangular shaped obstacles (representing cars), consisting of parking spaces (parallel and reverse) with a rectangular car like differential drive bot, its initial position and multiple possible goal positions (which represent all the parking spaces that the bot car can be parked at). The final output of this project will be a path from its initial position to one of the final positions, which will be the closest or the fastest parking goal position.
 
 ### Robot type and constraints:
-* The project is in a planar (2D) space with a single rectangular car like robot with differential drive constraint to a DOF as R2 * S1, with motion allowed only in forward direction, hence R2 and steering angle Q. The constraints mathematically are:
-  * Car length = 8 pixels
-  * max_steering_angle = 1.5 radians
+* The project is in a planar (2D) space with a single rectangular car like robot DOF as R2 * S1, with motion allowed only in forward direction. Though the car has three degrees of freedom i.e. the position(x,y) and orientation(theta). The driver has only two controls, i.e. the accelerator to control the position and the steering wheel to control the orientation of the car. Control system equations for such a system can wee written as:
+
+!['theta; signifies the orientation, 'v' is the linear velocity and 'omega' is the steering angle](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/equations.JPG)
+
+where 'theta; signifies the orientation, 'v' is the linear velocity and 'omega' is the steering angle
+ 
+* With this in mind, the nonholonomic car like robot has is restricted by some kinematics and dynamics conditions. Hence, we will only extend the tree towards random configurations on trajectories allowed under these conditions.
+* For this, primitive motions can be made from the equations defined above; they are:
+	* ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/1.JPG)
+	* ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/2.JPG)
+	* ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/3.JPG)
+	* ![](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/4.JPG)
+ 	* Car length = 7.5 pixels; selected in our case and can be modified
+  	* max_steering_angle = 1.1 radians which is approximately 63 degrees; selected in our case and can be modified
+	* dt represents one time step, whcih in our implemenation has been selected as 0.1 seconds
+	
+* These equations are used to generate the orimitive motions of our robot which are explained and plotted below
   
 * Finally, RRT was choosen for this and this was very basic and the previously proposed technique of Reduced Visibility graph Roadmap methodology would fail for a robot with differential drive. RRt was finally implemeted for the pathplanning in <b>MATLAB</b>
 
@@ -24,7 +38,7 @@
  ### Thought Process while starting: Coming to the algorithm implementation
  * Though I knew, the theory and the working of the RRT, I didn;t know how to start after I had made the map and folowwing were the things I was not able to decide:
  	* which tool to use? <b>Saurav</b> had suggested <b>KLAMPt</b>, I found controlling the environment cariables far too complicated.
-	* I wanted to stick to based 2d and I thought of doing it in OpenGL for C++ as I wanted to stick to C++ instead of PyOpenGL, PyGame that I initially thought.
+	* I wanted to stick to basic 2d and I thought of doing it in OpenGL for C++ as I wanted to stick to C++ instead of PyOpenGL, PyGame that I initially thought.
 	* I always wanted to get into MATLAB and hence I though this would be a good oppurtunity
  	* what data structure can I use?
 	* how will I visualize the constant generating of nodes and searching and connecting of nodes
@@ -46,10 +60,10 @@
 **II Finding the nearest node from the randomly generated node** - This is done by calculating distance of the random configuration from each node in the tree, Euclidean distance is used for this. All the distances are stored in an array and the minmun s=distance and its corresponding node is found. **Here collision detection should have been added**  
 
 **II Extending the tree towards the randomly generated node** - To do this either the random configuration can be added directly to the tree as new node or the tree is extended one step in the direction of the random node. This step size choosen randomly. This can be further optimized for better results
-
 	
 ### Conceptual Description (Nonholonomic):
 * The mobile robots are known to be nonholonomic, i.e. they are subject to nonintegrable equality nonholonomic constraints involving the velocity. In other words, the dimension of the admissible velocity space is smaller than the dimension of the configuration space. In addition, the range of possible controls is usually further constrained by inequality constraints due to mechanical stops in steering mechanism. 
+
 ### What is RRT?
 Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It searches high dimensional spaces by incrementally building random tree by generating random samples. This process of building a randomly generated tree and connecting it from starting to goal configuration is as follows:
 
@@ -60,12 +74,14 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 
 * **After all this, I decided to start with basic RRT while working on the Non Holonomic primitives simultaneously wheich were like:
  
- * Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m), which looks like this:
+ * Primitive motions for the above mentioned constarints on the car were implemented, which can be found  [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/PrimitiveMotion.m) which looks like this:
  ![Primitive Motion of the Differential Drive car like robot](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/primitive.JPG)
  
  * Normal RRT was implemented from a given initial to a given goal position which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/NormalRRT.m), whcih looks like:
  ![Normal RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/normal%20RRt.JPG)
- * **Consequently, whhen the primitives were done I added it to the generation or tree extension like:
+ ### How to genrate the RRT with the nonholonomic constraints (CHANGES HAVE BEEN DONE HERE w.r.t to taking into account the orientation as well)
+
+* Similar to the 
  
  * For the third module, a RRT with these primitive motion contrainst were implemented which can be found [here](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/RRT_NonHolonomic_R2S1.m), whcih looks like:
  ![Combined RRT](https://github.com/architkhullar/RobotMotionPlanning_TermProject/blob/master/Images/NH%20RRT.JPG)
@@ -85,7 +101,7 @@ Rapidly-exploring Random Tree is a sampling based motion planning algorithm. It 
 
 ### Limitations of the project:
 * No collision detection
-* No bias for the random generation of points and the theta or the angle of the orientation and hence very slow
+* No bias for the random generation of points **(This is also done)** and the theta or the angle of the orientation and hence very slow
 * random sampling sould have been bettered
 * can work more to optimizethe orientation (can add a bias for the orientations as well)
 * Optimized step size
